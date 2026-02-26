@@ -30,6 +30,12 @@ test('safari non-network error (has stack)', t => {
 	t.false(isNetworkError(safariError));
 });
 
+test('chrome network error with hostname', t => {
+	// Chrome now appends the hostname: "Failed to fetch (example.com)"
+	const chromeError = new TypeError('Failed to fetch (example.com)');
+	t.true(isNetworkError(chromeError));
+});
+
 test('standard network error messages', t => {
 	const messages = [
 		'network error',
@@ -51,6 +57,7 @@ test('standard network error messages', t => {
 test('non-network errors', t => {
 	t.false(isNetworkError(new Error('Not a network error')));
 	t.false(isNetworkError(new TypeError('Not a network error')));
+	t.false(isNetworkError(new TypeError('Failed to fetch user profile')));
 	t.false(isNetworkError(null));
 	t.false(isNetworkError(undefined));
 	t.false(isNetworkError('string'));
