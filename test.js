@@ -23,11 +23,21 @@ test('safari network error', t => {
 	t.true(isNetworkError(safariError));
 });
 
+test('safari network error with domain', t => {
+	const safariError = new TypeError('Load failed (api.example.com)');
+	safariError.stack = undefined;
+	t.true(isNetworkError(safariError));
+});
+
 test('safari non-network error (has stack)', t => {
 	const safariError = new TypeError('Load failed');
 	// Ensure it has a stack (which it does by default)
 	t.true(typeof safariError.stack === 'string');
 	t.false(isNetworkError(safariError));
+
+	const safariErrorWithDomain = new TypeError('Load failed (api.example.com)');
+	t.true(typeof safariErrorWithDomain.stack === 'string');
+	t.false(isNetworkError(safariErrorWithDomain));
 });
 
 test('chrome network error with hostname', t => {
