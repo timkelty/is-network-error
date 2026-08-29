@@ -62,6 +62,9 @@ test('standard network error messages', t => {
 		const error = new TypeError(message);
 		t.true(isNetworkError(error), `Should detect: ${message}`);
 	}
+
+	t.true(isNetworkError(new Error('Network connection lost.')));
+	t.false(isNetworkError(new RangeError('Network connection lost.')));
 });
 
 test('non-network errors', t => {

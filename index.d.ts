@@ -23,4 +23,4 @@ async function getUnicorns() {
 console.log(await getUnicorns());
 ```
 */
-export default function isNetworkError(value: unknown): value is TypeError;
+export default function isNetworkError(value: unknown): value is Error;

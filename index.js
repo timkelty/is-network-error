@@ -10,20 +10,27 @@ const errorMessages = new Set([
 	'fetch failed', // Undici (Node.js)
 	'terminated', // Undici (Node.js)
 	' A network error occurred.', // Bun (WebKit)
-	'Network connection lost', // Cloudflare Workers (fetch)
 ]);
 
 export default function isNetworkError(error) {
 	const isValid = error
 		&& isError(error)
-		&& error.name === 'TypeError'
 		&& typeof error.message === 'string';
 
 	if (!isValid) {
 		return false;
 	}
 
-	const {message, stack} = error;
+	const {message, name, stack} = error;
+
+	// Cloudflare Workers fetch uses Error for network disconnects.
+	if (name === 'Error' && message === 'Network connection lost.') {
+		return true;
+	}
+
+	if (name !== 'TypeError') {
+		return false;
+	}
 
 	// Safari 17+ has generic message but no stack for network errors
 	if (message === 'Load failed' || (message.startsWith('Load failed (') && message.endsWith(')'))) {

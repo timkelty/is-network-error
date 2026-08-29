@@ -37,8 +37,8 @@ console.log(await getUnicorns());
 
 ## API
 
-### `isNetworkError(value: unknown): value is TypeError`
+### `isNetworkError(value: unknown): value is Error`
 
 Returns `true` if the given value is a Fetch network error, otherwise `false`.
 
-This function acts as a type guard, narrowing the type to `TypeError` when it returns `true`.
+This function acts as a type guard, narrowing the type to `Error` when it returns `true`.
